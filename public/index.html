@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title>BeerLogger Console</title>
+  <meta charset="utf-8" />
+  <link href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+   <style>
+    .sensor-box {
+      border: 1px dotted silver;
+      padding: 15px;
+    }
+
+    body {
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="sensor-box">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Site</th>
+            <th scope="col">Node</th>
+            <th scope="col">Value</th>
+            <th scope="col">Timestamp</th>
+          </tr>
+        </thead>
+        <tbody id="sensor-box">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sensor-box">
+      <button id="button" type="button" class="btn btn-light" onclick="startStop(event)">
+        Start
+      </button>
+    </div>
+  </div>
+
+</body>
+
+<script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+<script src="timer.js"></script>
+
+</html>
