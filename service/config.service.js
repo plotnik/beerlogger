@@ -12,5 +12,7 @@ module.exports = {
     mysql_host: process.env.mysql_host,
     mysql_user: process.env.mysql_user,
     mysql_password: process.env.mysql_password,
-    mysql_database: process.env.mysql_database
+    mysql_database: process.env.mysql_database,
+
+    refresh_topics_sec: process.env.refresh_topics_sec
 };
