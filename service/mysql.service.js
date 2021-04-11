@@ -1,14 +1,17 @@
 const mysql = require('mysql');
+const config = require('./config.service');
 
 let connection;
 
 function MySQLconnect(func) {
-  connection = mysql.createConnection({
-    host: 'server193.hosting.reg.ru',
-    user: 'u1342734_mysql',
-    password: '899FSWSo',
-    database: 'u1342734_mqtt'
-  });
+  const mysqlConfig = {
+    host: config.mysql_host,
+    user: config.mysql_user,
+    password: config.mysql_password,
+    database: config.mysql_database
+  };
+
+  connection = mysql.createConnection(mysqlConfig);
   return new Promise((resolve, reject) => {
     connection.connect((err) => {
       if (err) {

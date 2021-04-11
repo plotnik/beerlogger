@@ -1,0 +1,66 @@
+= beerlogger: Копирование данных с сервера wqtt.ru в MySQL
+
+== Настройка
+
+Для установки npm-модулей в проект: `npm install`
+
+Перед запуском сервера в корневой каталог нужно добавить файл `.env` с параметрами:
+
+node_env::
+Название энвайронмента, `dev` или `prod`
+
+wqtt_host::
+Адрес хоста на wqtt.ru
+
+wqtt_wss_port::
+Адрес порта для вебсокета на wqtt.ru
+
+wqtt_username::
+Юзер для вебсокета на wqtt.ru
+
+wqtt_password::
+Пароль для вебсокета на wqtt.ru
+
+mysql_host::
+Адрес хоста для MySQL
+
+mysql_user::
+Юзер для MySQL
+
+mysql_password::
+Пароль для MySQL
+
+mysql_database::
+Название базы на сервере MySQL. База содержит таблицы:
++
+[cols="1"]
+|===
+a| sensors::
+Таблица, в которую будем писать данные. Имеет структуру:
++
+```
+CREATE TABLE `sensors` (
+  `tstamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `site` tinyint unsigned NOT NULL,
+  `node` tinyint unsigned NOT NULL,
+  `sensor` float,
+  PRIMARY KEY (`tstamp`,`site`,`node`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+a| topics::
+Таблица, в которой определены топики MQTT. Имеет структуру:
++
+```
+CREATE TABLE `topics` (
+  `site` tinyint unsigned NOT NULL,
+  `node` tinyint unsigned NOT NULL,
+  `topic` varchar(255),
+  PRIMARY KEY (`site`,`node`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+|===
+
+== Запуск сервера
+
+Для запуска сервера: `npm start`

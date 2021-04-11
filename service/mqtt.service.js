@@ -1,11 +1,10 @@
 const mqttjs = require('mqtt');
 const mysql = require('./mysql.service');
-
-let host = "M4.WQTT.RU";
-let port = 3097;
-let topics = [];
+const config = require('./config.service');
 
 let client;
+
+let topics = [];
 let tempData = {};
 let allData = {};
 let isWorking = false;
@@ -16,10 +15,10 @@ function MQTTconnect() {
 
         console.log('--- MQTTconnect:', topics);
 
-        var endpoint = 'wss://' + host + ':' + port;
+        var endpoint = 'wss://' + config.wqtt_host + ':' + config.wqtt_wss_port;
         let options = {
-            username: "u_177PB1",
-            password: "899FSWSo",
+            username: config.wqtt_username,
+            password: config.wqtt_password,
         };
 
         isWorking = true;
@@ -27,10 +26,11 @@ function MQTTconnect() {
         client.on('connect', () => {
             for (let i = 0; i < topics.length; i++) {
                 client.subscribe(topics[i].topic);
-                //console.log('--- subscribe:', topics[i].topic);
+                console.log('--- subscribe:', topics[i].topic);
             }
         });
         client.on('message', function (topic, message) {
+            //console.log('--- message:', topic);
             for (let i = 0; i < topics.length; i++) {
                 if (topic === topics[i].topic) {
                     tempData = {

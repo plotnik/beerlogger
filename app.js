@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mqtt = require('./service/mqtt.service');
-const mysql = require('./service/mysql.service');
+const b = require('./service/beerlogger.service');
 
 const port = process.env.PORT || 4200;
 
@@ -22,15 +22,13 @@ app.get('/topics', (req, res, next) => {
 });
 
 app.get('/start', (req, res, next) => {
-    console.log('--- start');
-    mysql.start().then(mqtt.start());
-    res.send({ success: true });
+    let result = b.start();
+    res.send(result);
 });
 
 app.get('/stop', (req, res, next) => {
-    console.log('--- stop');
-    mqtt.stop();
-    res.send({ success: true });
+    let result = b.stop();
+    res.send(result);
 });
 
 app.use(function (err, req, res, next) {
