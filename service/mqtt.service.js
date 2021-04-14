@@ -52,15 +52,27 @@ function MQTTconnect() {
                 }
             }
 
-            /* Проверить изменения в топиках;
+            /* Проверить изменения в топиках.
              */
             const curTime = Date.now();
             if (curTime - lastTopicsUpdate > config.refresh_topics_sec*1000) {
                 lastTopicsUpdate = curTime;
                 mysql._getTopics().then(data => {
-                    let newTopics = diff(topics, data);
+
+                    let newTopics = topicsDiff(topics, data);
                     if (newTopics.length > 0) {
                         console.log('--- newTopics:', newTopics);
+                        for (let i = 0; i < newTopics.length; i++) {
+                            client.subscribe(newTopics[i].topic);
+                        }
+                    }
+
+                    let oldTopics = topicsDiff(data, topics);
+                    if (oldTopics.length > 0) {
+                        console.log('--- oldTopics:', oldTopics);
+                        for (let i = 0; i < oldTopics.length; i++) {
+                            client.unsubscribe(oldTopics[i].topic);
+                        }
                     }
                 });
             }
@@ -68,7 +80,10 @@ function MQTTconnect() {
     });
 }
 
-function diff(topics1, topics2) {
+/**
+ * Найти разницу `topics1 - topics2`.
+ */
+function topicsDiff(topics1, topics2) {
     return topics1.filter(t1 => !topics2.some(t2 => {
         return t1.topic === t2.topic;
     }));
@@ -99,3 +114,4 @@ module.exports.start = MQTTconnect;
 module.exports.stop = stopProcessing;
 module.exports.readSensorsData = readSensorsData;
 module.exports.getCurrentTopics = getCurrentTopics;
+module.exports.topicsDiff = topicsDiff;
