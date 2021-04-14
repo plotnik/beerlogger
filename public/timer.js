@@ -24,7 +24,8 @@ function switchButton() {
         isWorking = true;
     }
     $("#button")[0].innerHTML = isWorking ? "Stop" : "Start";
-    console.log("isWorking:", isWorking);
+    //location.reload();
+    //console.log("isWorking:", isWorking);
 }
 
 function ifx(x) {
@@ -32,12 +33,18 @@ function ifx(x) {
 }
 
 function updateControls() {
-    if (topics.length==0) {
-        $.get("/topics").then(data => {
+
+    $.get("/topics").then(data => {
+        if (topics.length==0) {
             topics = data;
             console.log('topics:', topics);
-        });
-    }
+        } else {
+            if (topics.length != data.length) {
+                location.reload();
+            }
+        }
+    });
+
     $.get("/data").then(data => {
         let sensorBox = '';
         for (let i = 0; i < topics.length; i++) {

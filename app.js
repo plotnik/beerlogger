@@ -17,7 +17,7 @@ app.get('/data', (req, res, next) => {
 });
 
 app.get('/topics', (req, res, next) => {
-    let topics = mqtt.getTopics();
+    let topics = mqtt.getCurrentTopics();
     res.send(topics);
 });
 

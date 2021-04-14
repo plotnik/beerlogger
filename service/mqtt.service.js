@@ -59,20 +59,22 @@ function MQTTconnect() {
                 lastTopicsUpdate = curTime;
                 mysql._getTopics().then(data => {
 
-                    let newTopics = topicsDiff(topics, data);
+                    let newTopics = topicsDiff(data, topics);
                     if (newTopics.length > 0) {
                         console.log('--- newTopics:', newTopics);
                         for (let i = 0; i < newTopics.length; i++) {
                             client.subscribe(newTopics[i].topic);
                         }
+                        topics = data;
                     }
 
-                    let oldTopics = topicsDiff(data, topics);
+                    let oldTopics = topicsDiff(topics, data);
                     if (oldTopics.length > 0) {
                         console.log('--- oldTopics:', oldTopics);
                         for (let i = 0; i < oldTopics.length; i++) {
                             client.unsubscribe(oldTopics[i].topic);
                         }
+                        topics = data;
                     }
                 });
             }
