@@ -1,9 +1,10 @@
 const express = require('express');
 const path = require('path');
 const mqtt = require('./service/mqtt.service');
+const config = require('./service/config.service');
 const b = require('./service/beerlogger.service');
 
-const port = process.env.PORT || 4200;
+const port = process.env.PORT || config.app_port;
 
 let app = express();
 

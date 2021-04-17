@@ -1,8 +1,8 @@
 const b = require('./service/beerlogger.service');
 const mqtt = require('./service/mqtt.service');
 
-//b.start();
-testTopicsDiff();
+b.start();
+//testTopicsDiff();
 
 function testTopicsDiff() {
     let topics1 = [

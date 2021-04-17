@@ -1,17 +1,9 @@
 const mysql = require('mysql');
 const config = require('./config.service');
 
-let poolCluster;
+let pool;
 
 async function MySQLconnect(func) {
-
-  let clusterConfig = {
-    canRetry: true,
-    removeNodeErrorCount: 5,
-    //defaultSelector: 'ORDER'
-  };
-
-  poolCluster = mysql.createPoolCluster(clusterConfig);
 
   const mysqlConfig = {
     connectionLimit: 10,
@@ -21,14 +13,14 @@ async function MySQLconnect(func) {
     database: config.mysql_database
   };
 
-  poolCluster.add(mysqlConfig);
+  pool = mysql.createPool(mysqlConfig);
 
   return _getPoolConnection();
 }
 
 async function _getPoolConnection() {
   return new Promise((resolve, reject) => {
-    poolCluster.getConnection((err, connection) => {
+    pool.getConnection((err, connection) => {
       if (err) {
         reject();
       } else {
@@ -46,14 +38,20 @@ function writeSensorsData(data) {
 
         conn.release();
         if (error) {
-          console.log(error);
+          if (error.code != 'ER_DUP_ENTRY') {
+            console.log(error);
+          } else {
+            /* В базе уже есть запись от этого датчика
+             * за эту секунду, игнорируем.
+             */
+          }
         }
       });
   });
 }
 
 function stopProcessing() {
-  poolCluster.end();
+  pool.end();
 }
 
 async function _getTopics() {

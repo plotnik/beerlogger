@@ -2,7 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-    node_env: process.env.node_env,
+    app_env: process.env.app_env,
+    app_port: process.env.app_port,
 
     wqtt_host: process.env.wqtt_host,
     wqtt_wss_port: process.env.wqtt_wss_port,
