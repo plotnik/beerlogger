@@ -10,7 +10,6 @@ let app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-let readingSensors = false;
 
 app.get('/data', (req, res, next) => {
     let data = mqtt.readSensorsData();
@@ -42,6 +41,8 @@ app.use(function (err, req, res, next) {
 });
 
 // start server
-app.listen(port, () => console.log('[app] BeerLogger started on port ' + port));
+app.listen(port, () => console.log('[app] BeerLogger1 started on port ' + port));
+
+b.start();
 
 module.exports = app;

@@ -57,7 +57,7 @@ function stopProcessing() {
 async function _getTopics() {
   return new Promise((resolve, reject) => {
     _getPoolConnection().then(conn => {
-      conn.query('SELECT site,node,topic FROM topics', (error, results, fields) => {
+      conn.query('SELECT site,node,topic FROM topics WHERE enabled', (error, results, fields) => {
 
         conn.release();
         if (error) {
